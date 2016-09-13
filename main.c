@@ -15,9 +15,13 @@ int main()
 	file = openfile("ECG.txt");
 
     int data = getNextData(file);          // Read Data from Sensor
-    printf("%d\n", data);
+    printf("data: %d\n", data);
 
-    //lowPassFilter();            // Filter Data
+    data = lowPassFilter(data);            // Filter Data
+    printf("firstLowPass: %d\n", data);
+
+    data = lowPassFilter(data);
+    printf("secondLowPass: %d\n", data);
 
     //peakDetection(&qsr_params); // Perform Peak Detection
 

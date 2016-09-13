@@ -2,8 +2,6 @@
 #define FILTERS_H
 
 // Feel free to change return statement and arguments
-void lowPassFilter();
+int lowPassFilter(int data);
 
-// Implement additional filters
- 
 #endif // FILTERS_H
