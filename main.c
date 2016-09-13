@@ -20,8 +20,9 @@ int main()
     data = lowPassFilter(data);            // Filter Data
     printf("firstLowPass: %d\n", data);
 
-    data = lowPassFilter(data);
+    data = lowPassFilter(getNextData(file));
     printf("secondLowPass: %d\n", data);
+    
 
     //peakDetection(&qsr_params); // Perform Peak Detection
 
