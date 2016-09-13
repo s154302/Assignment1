@@ -11,7 +11,7 @@ int getNextData(FILE *file)
 
 FILE* openfile(const char* filename)
 {
-   FILE *file = fopen(filename, "r"); // Replace NULL with the actual file object
+   FILE *file = fopen(filename, "r"); 
 
    return file;
 }
