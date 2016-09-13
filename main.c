@@ -15,15 +15,21 @@ int main()
 	file = openfile("ECG.txt");
         int data;
         
-        while(!feof(file)) {
+    //    while(!feof(file)) {
+        for(int i = 0; i < 20; i++) {
             data = getNextData(file);          // Read Data from Sensor
-//            printf("data: %d\n", data);
             
             data = lowPassFilter(data);            // Filter Data
-//            printf("LowPass: %d\n", data);
             
             data = highPassFilter(data);
-            printf("HighPass: %d\n", data);
+            
+            data = derivativeFilter(data);
+            
+            data = squaringFilter(data);
+            
+            data = movingWindowIntegrationFilter(data);
+
+          //  printf("%d\n", data);
         }   
 
     //peakDetection(&qsr_params); // Perform Peak Detection

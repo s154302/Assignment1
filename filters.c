@@ -30,3 +30,43 @@ int highPassFilter(int data){
 	data_array[0]=data;
 	return current;
 }
+
+int derivativeFilter(int data){
+	static int current;
+	static int data_array[4];
+		
+	current = (2*data + data_array[0] - data_array[2] -2 * data_array[3]) / 8;
+		
+		for(int i = 3; i>0; i--){
+			data_array[i] = data_array[i-1];
+		}
+		data_array[0]=data;
+		return current;
+}
+
+int squaringFilter(int data) {
+    return data * data;
+}
+
+int movingWindowIntegrationFilter(int data) {
+    static int current = 0, data_array[29];
+    
+    for(int i = 0; i < 29; i++) {
+        printf(" %d", data_array[i]);
+    }
+    printf("\n");
+    
+    for(int i = 0; i < 29; i++) {
+        current = current + data_array[i];
+    }
+   // printf("%d\n", current + data);
+    
+    current = (current + data) / 30;
+    
+    for(int i = 28; i > 0; i--) {
+        data_array[i] = data_array[i-1];
+    }
+    data_array[0] = data;
+    
+    return current;
+}
