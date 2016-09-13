@@ -6,7 +6,7 @@ int getNextData(FILE *file)
 {
 	int value;
 	fscanf(file, "%d", &value);
-   return value; // return sensor value
+	return value; // return sensor value
 }
 
 FILE* openfile(const char* filename)
