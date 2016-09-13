@@ -13,16 +13,18 @@ int main()
     QRS_params qsr_params;       // Instance of the made avaiable through: #include "qsr.h"
 	FILE *file;                  // Pointer to a file object
 	file = openfile("ECG.txt");
-
-    int data = getNextData(file);          // Read Data from Sensor
-    printf("data: %d\n", data);
-
-    data = lowPassFilter(data);            // Filter Data
-    printf("firstLowPass: %d\n", data);
-
-    data = lowPassFilter(getNextData(file));
-    printf("secondLowPass: %d\n", data);
-    
+        int data;
+        
+        while(!feof(file)) {
+            data = getNextData(file);          // Read Data from Sensor
+//            printf("data: %d\n", data);
+            
+            data = lowPassFilter(data);            // Filter Data
+//            printf("LowPass: %d\n", data);
+            
+            data = highPassFilter(data);
+            printf("HighPass: %d\n", data);
+        }   
 
     //peakDetection(&qsr_params); // Perform Peak Detection
 

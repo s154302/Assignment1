@@ -5,5 +5,6 @@
 
 // Feel free to change return statement and arguments
 int lowPassFilter(int data);
+int highPassFilter(int data);
 
 #endif // FILTERS_H
