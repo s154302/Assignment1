@@ -1,13 +1,13 @@
 #include <stdio.h>
+#include "sensor.c"
 
-int main(){
-	static const char filename[] = "ECG.txt";
-	FILE *file = fopen(filename, "r");
+int exercise1(){
+	FILE* file = openfile("ECG.txt");
 	int value = 1, max_value;
-	fscanf(file, "%d", &max_value);
+	max_value = getNextData(file);
 
 	while(!feof(file)){
-		fscanf(file, "%d", &value);
+		value = getNextData(file);
 		if(value > max_value){
 			max_value = value;
 

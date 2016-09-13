@@ -14,17 +14,28 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration buildProperties="" id="cdt.managedbuild.toolchain.gnu.cygwin.base.207880681" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
+				<configuration buildProperties="" description="" id="cdt.managedbuild.toolchain.gnu.cygwin.base.207880681" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
 					<folderInfo id="cdt.managedbuild.toolchain.gnu.cygwin.base.207880681.1608337262" name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.base.178519355" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.Cygwin_PE" id="cdt.managedbuild.target.gnu.platform.cygwin.base.135208477" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.cygwin.base"/>
-							<builder id="cdt.managedbuild.target.gnu.builder.cygwin.base.1978415330" managedBuildOn="false" name="Gnu Make Builder.Default" superClass="cdt.managedbuild.target.gnu.builder.cygwin.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.137365642" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base"/>
+							<builder buildPath="${workspace_loc:/Assignment1}/Default" id="cdt.managedbuild.target.gnu.builder.cygwin.base.1978415330" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.cygwin.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.137365642" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.145327400" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1244119512" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.6374270" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1450556253" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.6374270" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1459481805" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1450556253" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.478323081" superClass="cdt.managedbuild.tool.gnu.c.compiler.input.cygwin"/>
+							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.base.1814723033" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.1003261476" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base.1003261476" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.base">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1260675088" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
 						</toolChain>
 					</folderInfo>
 				</configuration>
@@ -39,4 +50,9 @@
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/Assignment1"/>
+		</configuration>
+	</storageModule>
 </cproject>
