@@ -16,19 +16,8 @@ int main() {
 
 	//    while(!feof(file)) {
 	for (int i = 0; i < 200; i++) {
-		data = getNextData(file);          // Read Data from Sensor
-
-		data = lowPassFilter(data);            // Filter Data
-
-		data = highPassFilter(data);
-
-		data = derivativeFilter(data);
-
-		data = squaringFilter(data);
-
-		data = movingWindowIntegrationFilter(data);
-
-		printf("%d\n", data);
+            data = filterData(data);
+            
 	}
 
 	//peakDetection(&qsr_params); // Perform Peak Detection

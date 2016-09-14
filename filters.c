@@ -64,8 +64,14 @@ int movingWindowIntegrationFilter(int data) {
 
 	for (int i = 29; i > 0; i--) {
 		data_array[i] = data_array[i - 1];
-   //             printf("%d ", data_array[i]);
 	}
-   //     printf("\n");
 	return current;
+}
+
+int filterData(int data) {
+    return lowPassFilter(
+            highPassFilter(
+            derivativeFilter(
+            squaringFilter(
+            movingWindowIntegrationFilter(data)))));
 }

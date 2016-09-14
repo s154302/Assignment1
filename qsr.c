@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void peakDetection(QRS_params *params)
-{
+void peakDetection(QRS_params *params){
 
 }
