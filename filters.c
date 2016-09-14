@@ -52,17 +52,20 @@ int squaringFilter(int data) {
 }
 
 int movingWindowIntegrationFilter(int data) {
-	static int current = 0, data_array[30];
+	static int current, data_array[30];
+        int sum = 0;
 
+        data_array[0] = data;
 	for (int i = 0; i < 30; i++) {
-		current += data_array[i];
+		sum += data_array[i];
 	}
 
-	current = (current + data) / 30;
+	current = sum / 30;
 
 	for (int i = 29; i > 0; i--) {
 		data_array[i] = data_array[i - 1];
+   //             printf("%d ", data_array[i]);
 	}
-	data_array[0] = data;
+   //     printf("\n");
 	return current;
 }

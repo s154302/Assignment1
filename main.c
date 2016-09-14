@@ -15,7 +15,7 @@ int main() {
 	int data;
 
 	//    while(!feof(file)) {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 200; i++) {
 		data = getNextData(file);          // Read Data from Sensor
 
 		data = lowPassFilter(data);            // Filter Data
