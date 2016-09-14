@@ -53,9 +53,9 @@ int squaringFilter(int data) {
 
 int movingWindowIntegrationFilter(int data) {
 	static int current, data_array[30];
-        int sum = 0;
+	int sum = 0;
 
-        data_array[0] = data;
+	data_array[0] = data;
 	for (int i = 0; i < 30; i++) {
 		sum += data_array[i];
 	}
@@ -69,9 +69,9 @@ int movingWindowIntegrationFilter(int data) {
 }
 
 int filterData(int data) {
-    return lowPassFilter(
-            highPassFilter(
-            derivativeFilter(
-            squaringFilter(
-            movingWindowIntegrationFilter(data)))));
+	return lowPassFilter(
+			highPassFilter(
+					derivativeFilter(
+							squaringFilter(
+									movingWindowIntegrationFilter(data)))));
 }
