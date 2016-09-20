@@ -14,10 +14,10 @@ int main() {
 	file = openfile("ECG.txt");
 	int data, peak_determination[3], peaks[100];
 
-	while(!feof(file)) {
+//	while(!feof(file)) {
 	for (int i = 0; i < 200; i++) {
-		data = filterData(data);
-
+		data = filterData(getNextData(file));
+                printf("%d\n", data);
 		for (int i = 2; i > 0; i--) {
 			peak_determination[i] = peak_determination[i - 1];
 		}
@@ -43,3 +43,4 @@ int main() {
 
 	return 0;
 }
+

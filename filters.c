@@ -69,9 +69,9 @@ int movingWindowIntegrationFilter(int data) {
 }
 
 int filterData(int data) {
-	return lowPassFilter(
-			highPassFilter(
+	return movingWindowIntegrationFilter(
+			squaringFilter(
 					derivativeFilter(
-							squaringFilter(
-									movingWindowIntegrationFilter(data)))));
+							highPassFilter(
+									lowPassFilter(data)))));
 }
