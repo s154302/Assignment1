@@ -14,44 +14,24 @@ int main() {
 	file = openfile("ECG.txt");
 	int data;
 
-<<<<<<< HEAD
-//	while(!feof(file)) {
-	for (int i = 0; i < 200; i++) {
-		data = filterData(getNextData(file));
-                printf("%d\n", data);
-		for (int i = 2; i > 0; i--) {
-			peak_determination[i] = peak_determination[i - 1];
-		}
-		peak_determination[0] = data;
+	qsr_params.NPKF = 3500.0;
+	qsr_params.SPKF = 500.0;
+	qsr_params.THRESHOLD1 = qsr_params.NPKF + 0.25 * (qsr_params.SPKF - qsr_params.NPKF);
+	qsr_params.THRESHOLD2 = 0.5 * qsr_params.THRESHOLD1;
 
-		// Below needs revision.
+		while (!feof(file)) {
+			//filtering and finding data
+			data = filterData(getNextData(file));
 
-		if(peak_determination[1] > peak_determination[0] && peak_determination[1] > peak_determination[2]) {
-			for(int i = 99; i > 1; i--) {
-				peaks[i] = peaks[i - 1];
-			}
-			peaks[0] = peak_determination[1];
-
-			struct QRS_params peak;
+			//finding peak
+			peakDetection(&qsr_params, data);
 
 
 		}
-=======
-	while (!feof(file)) {
-		//filtering and finding data
-		data = filterData(getNextData(file));
-
-		//finding peak
-		findingPeaks(data);
->>>>>>> origin/master
-
-		struct QRS_params peak;
-
-	}
 
 //	peakDetection(&qsr_params); // Perform Peak Detection
 
-	return 0;
+		return 0;
 
-}
+	}
 

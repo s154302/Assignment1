@@ -2,10 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void peakDetection(QRS_params *params) {
-
-}
-
 void findingPeaks(int data) {
 	static int peak_determination[3] = { 0 }, count = -1, peaks[100] = { 0 };
 
@@ -23,7 +19,7 @@ void findingPeaks(int data) {
 			count += 100;
 		peaks[count] = peak_determination[1];
 
-		printf("%d and %d\n", peaks[count], data);
+	//	printf("%d and %d\n", peaks[count], data);
 		/*
 		 for(int i = 99; i > 1; i--) {
 		 peaks[i] = peaks[i - 1];
@@ -31,6 +27,14 @@ void findingPeaks(int data) {
 		 peaks[0] = peak_determination[1];
 		 */
 	}
+
+void peakDetection(QRS_params *params, int data) {
+	findingPeaks(data);
+	printf("%d and %d\n", peaks[count], data);
+
+}
+
+
 }
 
 
