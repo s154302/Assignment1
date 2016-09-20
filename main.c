@@ -12,8 +12,9 @@ int main() {
 	QRS_params qsr_params; // Instance of the made avaiable through: #include "qsr.h"
 	FILE *file;                  // Pointer to a file object
 	file = openfile("ECG.txt");
-	int data, peak_determination[3], peaks[100];
+	int data;
 
+<<<<<<< HEAD
 //	while(!feof(file)) {
 	for (int i = 0; i < 200; i++) {
 		data = filterData(getNextData(file));
@@ -35,12 +36,22 @@ int main() {
 
 
 		}
+=======
+	while (!feof(file)) {
+		//filtering and finding data
+		data = filterData(getNextData(file));
 
+		//finding peak
+		findingPeaks(data);
+>>>>>>> origin/master
+
+		struct QRS_params peak;
 
 	}
 
 //	peakDetection(&qsr_params); // Perform Peak Detection
 
 	return 0;
+
 }
 
