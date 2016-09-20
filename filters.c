@@ -4,8 +4,7 @@
 
 // Feel free to change return statement and arguments
 int lowPassFilter(int data) {
-	static int previous_1 =0, previous_2=0, current=0;
-	static int data_array[12]={0};
+	static int previous_1 =0, previous_2=0, current=0, data_array[12]={0};
 
 	current = 2 * previous_1 - previous_2
 			+ (data - 2 * data_array[5] + data_array[11]) / 32;
@@ -21,8 +20,8 @@ int lowPassFilter(int data) {
 }
 
 int highPassFilter(int data) {
-	static int current=0, previous_1=0;
-	static int data_array[32]={0};
+	static int current=0, previous_1=0, data_array[32]={0};
+
 	current = previous_1 - data / 32 + data_array[15] - data_array[16]
 			+ data_array[31] / 32;
 	previous_1 = current;
@@ -34,8 +33,7 @@ int highPassFilter(int data) {
 }
 
 int derivativeFilter(int data) {
-	static int current=0;
-	static int data_array[4]={0};
+	static int current=0, data_array[4]={0};
 
 	current = (2 * data + data_array[0] - data_array[2] - 2 * data_array[3])
 			/ 8;
@@ -61,7 +59,6 @@ int movingWindowIntegrationFilter(int data) {
 	}
 
 	current = sum / 30;
-	sum=0;
 
 	for (int i = 29; i > 0; i--) {
 		data_array[i] = data_array[i - 1];

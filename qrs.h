@@ -1,5 +1,5 @@
-#ifndef QSR_H
-#define QSR_H
+#ifndef QRS_H
+#define QRS_H
 
 // Header file for QRS functionality 
 // it is recommended to use the structure "QRS_parameters"
@@ -16,7 +16,7 @@ typedef struct QRS_params { // Structure for QRS parameters
 } QRS_params;
 
 // Feel free to change and add methods
-void findingPeaks(int data);
+int* findingPeaks(int data);
 void peakDetection(QRS_params *params, int data);
 
-#endif // QSR_H
+#endif // QRS_H
