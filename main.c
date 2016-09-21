@@ -14,8 +14,8 @@ int main() {
 	file = openfile("ECG.txt");
 	int data;
 
-	qrs_params.NPKF = 3500.0;
-	qrs_params.SPKF = 500.0;
+	qrs_params.NPKF = 4000.0;
+	qrs_params.SPKF = 2000.0;
 	qrs_params.THRESHOLD1 = qrs_params.NPKF + 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
 	qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
 
