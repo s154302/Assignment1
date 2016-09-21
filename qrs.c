@@ -13,13 +13,10 @@ int* findingPeaks(int data) {
 
 	if (peak_determination[1] > peak_determination[0]
 			&& peak_determination[1] > peak_determination[2]) {
-		count = (count + 1) % 100;
-		if (count < 0)
-			count += 100;
-		peaks[count] = peak_determination[1];
+		arrayInsert(peaks, 100, peak_determination[1]);
+
 
 	}
-	peaks[100] = count;
 	return peaks;
 
 }
@@ -52,14 +49,14 @@ void recalculateThresholds(QRS_params *params) {
 void peakDetection(QRS_params *params, int data) {
 	static int RR_counter = 0, previous_peak = 0,
 			Rpeaks[31] = { 0 }, RR_array[9] = { 0 }, RR_OK_array[9] = { 0 },
-			RR_average1, RR_average2,
+			RR_average1=80, RR_average2=80,
 			RR_low = 10, RR_high = 400, RR_miss = 0,
 			first_run = 0;
 	int RR;
 	if(first_run == 0){
 		Rpeaks[30] = 29;
-		RR_array[8] = 29;
-		RR_OK_array[8] =29;
+		RR_array[8] = 7;
+		RR_OK_array[8] =7;
 		first_run++;
 	}
 	int* peaks = findingPeaks(data);
@@ -70,14 +67,14 @@ void peakDetection(QRS_params *params, int data) {
 		// If peak is above threshold1 calculate the RR
 		if (peak > params->THRESHOLD1) {
 			RR = RR_counter;
-
 			RR_counter = 0;
 
+			printf("RRLow: %d, RR: %d, RRHigh: %d\n", RR_low,RR,RR_high);
 			// If the RR value is between the high and low RR values then:
 			if (RR_low < RR && RR < RR_high) {
+
 				// Store the peak as an RPeak
 				arrayInsert(Rpeaks, 30, peak);
-
 
 				// Recalculate the SPKF
 				params->SPKF = 0.125 * peak + 0.875 * params->SPKF;
@@ -85,6 +82,7 @@ void peakDetection(QRS_params *params, int data) {
 				// Store the RR value in the recent RR array and the OK RR array
 				arrayInsert(RR_array, 8, RR);
 				arrayInsert(RR_OK_array, 8, RR);
+				//printf("RR: %d and RROk: %d", RR_array[RR_array[8]], RR_OK_array[RR_OK_array[8]]);
 
 				// Recalculate the averages and the high, low, and miss values
 				RR_average1 = calculateAverage(RR_array);
@@ -122,7 +120,7 @@ void peakDetection(QRS_params *params, int data) {
 			params->NPKF = 0.125 * peak + 0.875 * params->NPKF;
 			recalculateThresholds(params);
 		}
-printf("%d and %d and %d\n", Rpeaks[30], Rpeaks[Rpeaks[30]], RR_OK_array[RR_OK_array[8]]);
+//printf("%d and %d and %d\n", Rpeaks[30], Rpeaks[Rpeaks[30]], RR_OK_array[RR_OK_array[8]]);
 	}
 //	printf("%d\n", Rpeaks[Rpeak_counter]);
 	previous_peak = peaks[100];
