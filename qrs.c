@@ -3,6 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void arrayInsert(int* array, int size, int value) {
+	// Inserts an object into a circular array.
+	array[size] = (array[size] + 1) % size;
+	if (array[size] < 0) {
+		array[size] += size;
+	}
+	array[array[size]] = value;
+}
+
 int* findingPeaks(int data) {
 	static int peak_determination[3] = { 0 }, peaks[101] = { 0 };
 
@@ -17,17 +26,25 @@ int* findingPeaks(int data) {
 
 	}
 	return peaks;
-
 }
+int* findingTime(int data) {
+	static int peak_determination[3] = { 0 }, peaks[101] = { 0 }, peaks_time[101] = {0}, time=0;
 
-void arrayInsert(int* array, int size, int value) {
-	// Inserts an object into a circular array.
-	array[size] = (array[size] + 1) % size;
-	if (array[size] < 0) {
-		array[size] += size;
+	time++;
+	for (int i = 2; i > 0; i--) {
+		peak_determination[i] = peak_determination[i - 1];
 	}
-	array[array[size]] = value;
+	peak_determination[0] = data;
+
+	if (peak_determination[1] > peak_determination[0]
+			&& peak_determination[1] > peak_determination[2]) {
+		arrayInsert(peaks_time, 100, time);
+
+	}
+	return peaks_time;
 }
+
+
 
 double calculateAverage(int* array) {
 	// Calculates the average of the array
@@ -64,6 +81,7 @@ int peakDetection(QRS_params *params, int data) {
 		first_run++;
 	}
 	int* peaks = findingPeaks(data);
+	int* peaks_time = findingTime(data);
 	int peak = peaks[peaks[100]];
 
 	RR_counter++;
@@ -110,7 +128,7 @@ int peakDetection(QRS_params *params, int data) {
 					// If the found peak is above threshold2 then values are recalculated and searchback is stopped.
 					if (peaks[i] > params->THRESHOLD2) {
 						RR_counter = 0;
-						arrayInsert(RR_array, 8, RR_all_peaks[i]);
+						arrayInsert(RR_array, 8, peaks_time[peaks_time[100]]-peaks_time[i]);
 						arrayInsert(Rpeaks, 30, peaks[i]);
 						params->SPKF = 0.125 * peak + 0.875 * params->SPKF;
 						RR_average1 = calculateAverage(RR_array);
@@ -118,7 +136,7 @@ int peakDetection(QRS_params *params, int data) {
 						RR_high = 1.16 * RR_average1;
 						RR_miss = 1.66 * RR_average1;
 						recalculateThresholds(params);
-					//	printf("Peak: %d RR: %d\n", Rpeaks[Rpeaks[30]], RR_array[RR_array[8]]);
+						printf("Peak: %d RR: %d\n", Rpeaks[Rpeaks[30]], RR_array[RR_array[8]]);
 						exit = 2;
 						break;
 					}

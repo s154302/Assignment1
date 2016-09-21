@@ -29,7 +29,7 @@ int main() {
 			if (exit == 1) {
 			//	printf("%d\n", time);
 			} else if(exit == 2) {
-				printf("%d\n", time);
+				//printf("%d\n", time);
 			}
 			time ++;
 
