@@ -20,6 +20,6 @@ int* findingPeaks(int data);
 void arrayInsert(int* array, int size, int value);
 double calculateAverage(int* array);
 void recalculateThresholds(QRS_params *params);
-void peakDetection(QRS_params *params, int data);
+int peakDetection(QRS_params *params, int data);
 
 #endif // QRS_H

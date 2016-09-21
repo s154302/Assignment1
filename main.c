@@ -12,7 +12,7 @@ int main() {
 	QRS_params qrs_params; // Instance of the made avaiable through: #include "qsr.h"
 	FILE *file;                  // Pointer to a file object
 	file = openfile("ECG.txt");
-	int data;
+	int data, time = 0;
 
 	qrs_params.NPKF = 4500.0;
 	qrs_params.SPKF = 750.0;
@@ -25,8 +25,13 @@ int main() {
 
 		//	printf("%d\n", data);
 			//finding peak
-			peakDetection(&qrs_params, data);
-
+			int exit = peakDetection(&qrs_params, data);
+			if (exit == 1) {
+			//	printf("%d\n", time);
+			} else if(exit == 2) {
+				printf("%d\n", time);
+			}
+			time ++;
 
 		}
 
