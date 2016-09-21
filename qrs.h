@@ -16,7 +16,11 @@ typedef struct QRS_params { // Structure for QRS parameters
 } QRS_params;
 
 // Feel free to change and add methods
+void arrayInsert(int* array, int size, int value);
 int* findingPeaks(int data);
-void peakDetection(QRS_params *params, int data);
+int* findingTime(int data);
+double calculateAverage(int* array);
+void recalculateThresholds(QRS_params *params);
+int peakDetection(QRS_params *params, int data);
 
 #endif // QRS_H
