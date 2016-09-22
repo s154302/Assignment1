@@ -14,8 +14,8 @@ int main() {
 	file = openfile("ECG.txt");
 	int data, time = 0;
 
-	qrs_params.NPKF = 4500.0;
-	qrs_params.SPKF = 750.0;
+	qrs_params.NPKF = 4500;
+	qrs_params.SPKF = 1500;
 	qrs_params.THRESHOLD1 = qrs_params.NPKF + 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
 	qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
 
@@ -29,7 +29,7 @@ int main() {
 			if (exit == 1) {
 			//	printf("%d\n", time);
 			} else if(exit == 2) {
-				//printf("%d\n", time);
+			//	printf("%d\n", time);
 			}
 			time ++;
 

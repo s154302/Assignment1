@@ -6,10 +6,10 @@
 // to organize all variables and parameters
 
 typedef struct QRS_params { // Structure for QRS parameters
-	double SPKF;
-	double NPKF;
-	double THRESHOLD1;
-	double THRESHOLD2;
+	int SPKF;
+	int NPKF;
+	int THRESHOLD1;
+	int THRESHOLD2;
 	// Add parameters that are missing
 	// or of use to you
 
