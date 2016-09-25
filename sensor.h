@@ -11,4 +11,8 @@ FILE* openfile(const char* filename);
 
 int getNextData(FILE *file);
 
+void write_to_file(const char* filename, int data);
+
+void closefile(const char* filename);
+
 #endif // SENSOR_H
