@@ -72,7 +72,7 @@ void recalculateThresholds(QRS_params *params) {
 }
 
 void peakDetection(QRS_params *params, int data) {
-	static int RR_counter = -1,
+	static int RR_counter = 0,
 			previous_peak = 0,
 			RR_array[9] = { 0 },
 			RR_OK_array[9] = { 0 },
@@ -145,6 +145,7 @@ void peakDetection(QRS_params *params, int data) {
 					if (peaks[i] > params->THRESHOLD2) {
 
 						arrayInsert(RR_array, 8, peaks_time[i] - params->Rpeak_time);
+						RR_counter = peaks_time[peaks_time[100]] - peaks_time[i];
 
 						params->SB_Rpeak = peaks[i];
 						params->SB_Rpeak_time = peaks_time[i];
@@ -156,7 +157,7 @@ void peakDetection(QRS_params *params, int data) {
 						RR_miss = 1.66 * RR_average1;
 						recalculateThresholds(params);
 
-						RR_counter-=RR_array[RR_array[8]];
+
 
 						break;
 					}

@@ -33,9 +33,6 @@ int main() {
 
 			//print params
 			if(qrs_params.SB_Rpeak_time != previous_time2){
-				// Thresholds
-				//printf("%d\n", qrs_params.THRESHOLD1);
-				//printf("%d\n",qrs_params.THRESHOLD2);
 
 				// Rpeak
 				//printf("%d\n", qrs_params.Rpeak);
@@ -45,6 +42,9 @@ int main() {
 				//printf("%d\n", qrs_params.SB_Rpeak);
 				printf("%d\n", qrs_params.SB_Rpeak_time);
 			}
+			// Thresholds
+			//printf("%d\n", qrs_params.THRESHOLD1);
+			//printf("%d\n",qrs_params.THRESHOLD2);
 
 			previous_time1 = qrs_params.Rpeak_time;
 			previous_time2 = qrs_params.SB_Rpeak_time;
