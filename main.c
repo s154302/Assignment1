@@ -10,9 +10,16 @@
 
 int main() {
 	QRS_params qrs_params; // Instance of the made avaiable through: #include "qsr.h"
-	FILE *file, *Rpeaks;               // Pointer to a file object
+	FILE *file, *Rpeaks, *Rpeaks_time, *SB_Rpeaks, *SB_Rpeaks_time, *threshold1, *threshold2;               // Pointer to a file object
 	file = openfile("ECG.txt");
-	//Rpeaks = fopen("Rpeaks.txt", "w");
+	Rpeaks = openWritingfile("Rpeaks.txt");
+	Rpeaks_time = openWritingfile("Rpeaks_time.txt");
+	SB_Rpeaks = openWritingfile("SB_Rpeaks.txt");
+	SB_Rpeaks_time = openWritingfile("SB_Rpeaks_time.txt");
+	threshold1 = openWritingfile("threshold1.txt");
+	threshold2 = openWritingfile("threshold2.txt");
+
+
 	int data = 0, time = 0, previous_time1 = 0, previous_time2 = 0;
 
 	qrs_params.NPKF = 4500;
@@ -34,18 +41,23 @@ int main() {
 
 			if(qrs_params.Rpeak_time != previous_time1){
 				// Rpeak
-				//fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
-				write_to_file("Rpeaks.txt",qrs_params.Rpeak);
-				write_to_file("Rpeaks_time.txt",qrs_params.Rpeak_time);
+				fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
+				fprintf(Rpeaks_time, "%d\n", qrs_params.Rpeak_time);
+				//write_to_file("Rpeaks.txt",qrs_params.Rpeak);
+				//write_to_file("Rpeaks_time.txt",qrs_params.Rpeak_time);
 			}
 
 			if(qrs_params.SB_Rpeak_time != previous_time2){
 				// SB Rpeaks
-				write_to_file("SB_Rpeaks.txt", qrs_params.SB_Rpeak);
-				write_to_file("SB_Rpeaks_time.txt", qrs_params.SB_Rpeak_time);
+				fprintf(SB_Rpeaks, "%d\n", qrs_params.SB_Rpeak);
+				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.SB_Rpeak_time);
+				//write_to_file("SB_Rpeaks.txt", qrs_params.SB_Rpeak);
+				//write_to_file("SB_Rpeaks_time.txt", qrs_params.SB_Rpeak_time);
 			}
 
 			// Thresholds
+			fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
+			fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
 			//write_to_file("threshold1.txt", qrs_params.THRESHOLD1);
 			//write_to_file("threshold2.txt",qrs_params.THRESHOLD2);
 
@@ -53,7 +65,13 @@ int main() {
 			previous_time2 = qrs_params.SB_Rpeak_time;
 
 		}
-		closefile("ECG.txt");
+		fclose(file);
+		fclose(Rpeaks);
+		fclose(Rpeaks_time);
+		fclose(SB_Rpeaks);
+		fclose(SB_Rpeaks_time);
+		fclose(threshold1);
+		fclose(threshold2);
 
 		return 0;
 

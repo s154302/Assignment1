@@ -11,26 +11,21 @@ int getNextData(FILE *file) {
 FILE* openfile(const char* filename) {
 	FILE *file = fopen(filename, "r");
 	if(file == NULL){
-		printf("Error opening file!\nCreating new file: %s", filename);
-		file = fopen(filename, "wb");
+		printf("Error opening %s!", filename);
 		exit(1);
 	}
 
 	return file;
 }
 
-void write_to_file(const char* filename, int data){
+FILE* openWritingfile(const char* filename) {
 	FILE *file = fopen(filename, "w");
-	if(file == NULL){
-		printf("Error opening file!\nCreating new file: %s", filename);
-		file = fopen(filename, "wb");
-		exit(1);
-	}
-	fprintf(file, "%d\n", data);
-	//printf("%s: %d\n", filename, data);
+		if(file == NULL){
+			printf("Error opening file!\nCreating new file: %s", filename);
+			file = fopen(filename, "wb");
+			exit(1);
+		}
 
+	return file;
 }
 
-void closefile(const char* filename){
-	fclose(filename);
-}
