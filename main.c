@@ -16,14 +16,14 @@ int main() {
 	Rpeaks_time = openWritingfile("Rpeaks_time.txt");
 	SB_Rpeaks = openWritingfile("SB_Rpeaks.txt");
 	SB_Rpeaks_time = openWritingfile("SB_Rpeaks_time.txt");
-	threshold1 = openWritingfile("threshold1.txt");
-	threshold2 = openWritingfile("threshold2.txt");
+	threshold1 = openWritingfile("Threshold1.txt");
+	threshold2 = openWritingfile("Threshold2.txt");
 
 
 	int data = 0, time = 0, previous_time1 = 0, previous_time2 = 0;
 
-	qrs_params.NPKF = 4500;
-	qrs_params.SPKF = 1500;
+	qrs_params.NPKF = 3000;
+	qrs_params.SPKF = 500;
 	qrs_params.THRESHOLD1 = qrs_params.NPKF + 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
 	qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
 	qrs_params.RR = 0;

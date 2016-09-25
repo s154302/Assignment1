@@ -168,9 +168,10 @@ void peakDetection(QRS_params *params, int data) {
 				}
 			}
 		} else {
+			printf("%d\n", params->THRESHOLD1);
 			params->NPKF = 0.125 * peak + 0.875 * params->NPKF;
 			recalculateThresholds(params);
-
+			printf("%d\n", params->THRESHOLD1);
 		}
 	}
 	previous_peak = peaks[100];
