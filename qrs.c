@@ -15,12 +15,10 @@ void arrayInsert(int* array, int size, int value) {
 int peakDetermination(int data){
 	static int peak_determination[3] = { 0 };
 
-
 	for (int i = 2; i > 0; i--) {
 			peak_determination[i] = peak_determination[i - 1];
 		}
 	peak_determination[0] = data;
-
 
 	if (peak_determination[1] > peak_determination[0]
 			&& peak_determination[1] > peak_determination[2]) {
@@ -30,7 +28,6 @@ int peakDetermination(int data){
 	}
 
 	return 0;
-
 }
 
 int* findingPeaks(int peak) {
@@ -84,7 +81,14 @@ void peakDetection(QRS_params *params, int data) {
 			RR_low = 140,
 			RR_high = 200,
 			RR_miss = 300,
-			RR = 0;
+			RR = 0,
+			first_time = 0;
+
+	if(first_time == 0){
+		RR_array[8] = 7;
+		RR_OK_array[8] = 7;
+		first_time++;
+	}
 
 	int peak_data = peakDetermination(data);
 	int* peaks = findingPeaks(peak_data);
@@ -106,6 +110,7 @@ void peakDetection(QRS_params *params, int data) {
 				// Reset RR counter
 				RR_counter = 0;
 
+
 				// Store the peak as an RPeak
 				params->Rpeak = peak;
 				params->Rpeak_time = peaks_time[peaks_time[100]];
@@ -120,6 +125,7 @@ void peakDetection(QRS_params *params, int data) {
 				// Recalculate the averages and the high, low, and miss values
 				RR_average1 = calculateAverage(RR_array);
 				RR_average2 = calculateAverage(RR_OK_array);
+
 				RR_low = 0.92 * RR_average2;
 				RR_high = 1.16 * RR_average2;
 				RR_miss = 1.66 * RR_average2;
@@ -129,6 +135,7 @@ void peakDetection(QRS_params *params, int data) {
 
 				// Else if RR is above RR_miss:
 			} else if (RR > RR_miss) {
+
 
 				// Counter for peak searchback
 				int i = peaks[100] - 1;
