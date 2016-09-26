@@ -10,7 +10,7 @@
 
 int main() {
 	QRS_params qrs_params; // Instance of the made avaiable through: #include "qsr.h"
-	FILE *file, *Rpeaks, *Rpeaks_time, *SB_Rpeaks, *SB_Rpeaks_time, *threshold1, *threshold2;               // Pointer to a file object
+	FILE *file, *Rpeaks, *Rpeaks_time, *SB_Rpeaks, *SB_Rpeaks_time, *threshold1, *threshold2, *vECG;               // Pointer to a file object
 	file = openfile("ECG.txt");
 	Rpeaks = openWritingfile("Rpeaks.txt");
 	Rpeaks_time = openWritingfile("Rpeaks_time.txt");
@@ -18,6 +18,7 @@ int main() {
 	SB_Rpeaks_time = openWritingfile("SB_Rpeaks_time.txt");
 	threshold1 = openWritingfile("Threshold1.txt");
 	threshold2 = openWritingfile("Threshold2.txt");
+	vECG = openWritingfile("vECG.txt");
 
 
 	int data = 0, time = 0, previous_time1 = 0, previous_time2 = 0;
@@ -35,6 +36,7 @@ int main() {
 		while (!feof(file)) {
 			//filtering and finding data
 			data = filterData(getNextData(file));
+			vECG = fprintf(vECG, "%d\n", data);
 
 			//finding peak
 			peakDetection(&qrs_params, data);
