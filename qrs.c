@@ -71,7 +71,7 @@ void recalculateThresholds(QRS_params *params) {
 	params->THRESHOLD2 = 0.5 * params->THRESHOLD1;
 }
 
-void peakDetection(QRS_params *params, int data) {
+int peakDetection(QRS_params *params, int data) {
 	static int RR_counter = 0,
 			previous_peak = 0,
 			RR_array[9] = { 0 },
@@ -133,6 +133,8 @@ void peakDetection(QRS_params *params, int data) {
 				// Recalculate the thresholds
 				recalculateThresholds(params);
 
+				return 1;
+
 				// Else if RR is above RR_miss:
 			} else if (RR > RR_miss) {
 
@@ -157,9 +159,7 @@ void peakDetection(QRS_params *params, int data) {
 						RR_miss = 1.66 * RR_average1;
 						recalculateThresholds(params);
 
-
-
-						break;
+						return 1;
 					}
 					i = (i - 1) % 100;
 					if (i < 0) {
@@ -168,13 +168,11 @@ void peakDetection(QRS_params *params, int data) {
 				}
 			}
 		} else {
-			printf("%d\n", params->THRESHOLD1);
 			params->NPKF = 0.125 * peak + 0.875 * params->NPKF;
 			recalculateThresholds(params);
-			printf("%d\n", params->THRESHOLD1);
 		}
 	}
 	previous_peak = peaks[100];
-
+	return 0;
 }
 
