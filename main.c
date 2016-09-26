@@ -41,25 +41,22 @@ int main() {
 
 			if(qrs_params.Rpeak_time != previous_time1){
 				// Rpeak
+				if(qrs_params.Rpeak < 2000){
+					printf("Warning");
+				}
 				fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
 				fprintf(Rpeaks_time, "%d\n", qrs_params.Rpeak_time);
-				//write_to_file("Rpeaks.txt",qrs_params.Rpeak);
-				//write_to_file("Rpeaks_time.txt",qrs_params.Rpeak_time);
 			}
 
 			if(qrs_params.SB_Rpeak_time != previous_time2){
 				// SB Rpeaks
 				fprintf(SB_Rpeaks, "%d\n", qrs_params.SB_Rpeak);
 				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.SB_Rpeak_time);
-				//write_to_file("SB_Rpeaks.txt", qrs_params.SB_Rpeak);
-				//write_to_file("SB_Rpeaks_time.txt", qrs_params.SB_Rpeak_time);
 			}
 
 			// Thresholds
 			fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
 			fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
-			//write_to_file("threshold1.txt", qrs_params.THRESHOLD1);
-			//write_to_file("threshold2.txt",qrs_params.THRESHOLD2);
 
 			previous_time1 = qrs_params.Rpeak_time;
 			previous_time2 = qrs_params.SB_Rpeak_time;

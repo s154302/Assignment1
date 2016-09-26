@@ -83,6 +83,8 @@ void peakDetection(QRS_params *params, int data) {
 			RR_miss = 300,
 			RR = 0,
 			first_time = 0;
+	// Counting successive SB
+	int SBwarning = 0;
 
 	if(first_time == 0){
 		RR_array[8] = 7;
@@ -109,6 +111,7 @@ void peakDetection(QRS_params *params, int data) {
 
 				// Reset RR counter
 				RR_counter = 0;
+				SBwarning = 0;
 
 
 				// Store the peak as an RPeak
@@ -136,7 +139,6 @@ void peakDetection(QRS_params *params, int data) {
 				// Else if RR is above RR_miss:
 			} else if (RR > RR_miss) {
 
-
 				// Counter for peak searchback
 				int i = peaks[100] - 1;
 				while (i != peaks[100]) {
@@ -144,6 +146,7 @@ void peakDetection(QRS_params *params, int data) {
 
 					if (peaks[i] > params->THRESHOLD2) {
 
+						SBwarning++;
 						arrayInsert(RR_array, 8, peaks_time[i] - params->Rpeak_time);
 						RR_counter = peaks_time[peaks_time[100]] - peaks_time[i];
 
@@ -157,13 +160,14 @@ void peakDetection(QRS_params *params, int data) {
 						RR_miss = 1.66 * RR_average1;
 						recalculateThresholds(params);
 
-
-
 						break;
 					}
 					i = (i - 1) % 100;
 					if (i < 0) {
 						i += 100;
+					}
+					if(SBwarning > 4){
+						printf("Warning");
 					}
 				}
 			}
