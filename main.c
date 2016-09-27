@@ -21,8 +21,8 @@ int main() {
 	threshold2 = openWritingfile("Threshold2.txt");
 	vECG = openWritingfile("vECG.txt");
 
-	int data = 0, previous_time1 = 0, previous_time2 = 0, RpeakCounter = 0,
-			sampleCounter = 0, seconds = 0, pulse = 0, exit = 0;
+	int data = 0, previous_time1 = 0, previous_time2 = 0,
+			sampleCounter = 0, pulse = 0, exit = 0;
 
 	qrs_params.NPKF = 4000;
 	qrs_params.SPKF = 1500;
@@ -34,6 +34,7 @@ int main() {
 	qrs_params.SB_Rpeak = 2000;
 	qrs_params.Rpeak_time = 0;
 	qrs_params.SB_Rpeak_time = 0;
+	qrs_params.seconds = 0;
 
 	while (!feof(file)) {
 		//filtering and finding data
@@ -44,17 +45,16 @@ int main() {
 
 		if (sampleCounter == 250) {
 			sampleCounter = 1;
-			seconds++;
+			qrs_params.seconds++;
 		} else {
 			sampleCounter++;
 		}
 
 		if (exit == 1) {
-			RpeakCounter++;
 
 			// Warning
 			if (qrs_params.Rpeak < 2000 || qrs_params.SB_Rpeak < 2000) {
-				printf("Warning! Low peak at %d!", qrs_params.Rpeak_time);
+				printf("Warning! Low peak at %d!", qrs_params.seconds);
 			}
 
 			// Rpeak
@@ -73,7 +73,9 @@ int main() {
 			previous_time2 = qrs_params.SB_Rpeak_time;
 
 			// Pulse
-			printf("%d, %d\n", qrs_params.RR, 6000/((qrs_params.RR*100)/250));
+			pulse = 6000/((qrs_params.RR*100)/250);
+
+			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n", qrs_params.Rpeak, qrs_params.seconds, pulse);
 
 		}
 
@@ -85,8 +87,6 @@ int main() {
 		fprintf(vECG, "%d\n", data);
 
 	}
-
-	printf("RPeaks: %d\n", RpeakCounter);
 
 	fclose(file);
 	fclose(Rpeaks);

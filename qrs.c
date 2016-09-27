@@ -113,6 +113,7 @@ int peakDetection(QRS_params *params, int data) {
 			// If the RR value is between the high and low RR values then:
 			if (RR_low < RR && RR < RR_high) {
 
+
 				// Reset RR counter
 				RR_counter = 0;
 				SBwarning = 0;
@@ -150,7 +151,6 @@ int peakDetection(QRS_params *params, int data) {
 
 					if (peaks[i] > params->THRESHOLD2) {
 
-						SBwarning++;
 						arrayInsert(RR_array, 8, peaks_time[i] - params->Rpeak_time);
 						RR_counter = peaks_time[peaks_time[100]] - peaks_time[i];
 
@@ -172,9 +172,13 @@ int peakDetection(QRS_params *params, int data) {
 					if (i < 0) {
 						i += 100;
 					}
-					if(SBwarning > 4){
-						printf("Warning at %d\n", params->SB_Rpeak_time);
-					}
+
+				}
+			}
+			if(RR_low > RR || RR > RR_high){
+				SBwarning++;
+				if(SBwarning > 4){
+					printf("Warning at %d\n", params->seconds);
 				}
 			}
 		} else {
