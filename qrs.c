@@ -82,10 +82,10 @@ int peakDetection(QRS_params *params, int data) {
 			RR_high = 200,
 			RR_miss = 300,
 			RR = 0,
-			first_time = 0;
-	// Counting successive SB
-	int SBwarning = 0;
-	int exit = 0;
+			first_time = 0,
+			exit = 0,
+			SBwarning = 0;
+	exit = 0;
 
 	if(first_time == 0){
 		RR_array[8] = 7;
@@ -114,7 +114,7 @@ int peakDetection(QRS_params *params, int data) {
 				// Reset RR counter
 				RR_counter = 0;
 				SBwarning = 0;
-
+				exit = 1;
 
 				// Store the peak as an RPeak
 				params->Rpeak = peak;
@@ -137,8 +137,6 @@ int peakDetection(QRS_params *params, int data) {
 
 				// Recalculate the thresholds
 				recalculateThresholds(params);
-
-				exit = 1;
 
 				// Else if RR is above RR_miss:
 			} else if (RR > RR_miss) {
@@ -166,6 +164,7 @@ int peakDetection(QRS_params *params, int data) {
 						params->RR = RR_array[RR_array[8]];
 
 						exit = 1;
+						break;
 					}
 					i = (i - 1) % 100;
 					if (i < 0) {

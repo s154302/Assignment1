@@ -73,7 +73,7 @@ int main() {
 			previous_time2 = qrs_params.SB_Rpeak_time;
 
 			// Pulse
-			//printf("%d, %d\n", qrs_params.RR, 6000/((qrs_params.RR*100)/250));
+			printf("%d, %d\n", qrs_params.RR, 6000/((qrs_params.RR*100)/250));
 
 		}
 
