@@ -104,6 +104,7 @@ int peakDetection(QRS_params *params, int data) {
 		// If peak is above threshold1 calculate the RR
 		if (peak > params->THRESHOLD1) {
 			RR = RR_counter;
+			params->RR = RR_counter;
 
 
 			// If the RR value is between the high and low RR values then:

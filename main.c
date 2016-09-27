@@ -30,8 +30,8 @@ int main() {
 			+ 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
 	qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
 	qrs_params.RR = 0;
-	qrs_params.Rpeak = 0;
-	qrs_params.SB_Rpeak = 0;
+	qrs_params.Rpeak = 2000;
+	qrs_params.SB_Rpeak = 2000;
 	qrs_params.Rpeak_time = 0;
 	qrs_params.SB_Rpeak_time = 0;
 
@@ -39,44 +39,50 @@ int main() {
 		//filtering and finding data
 		data = filterData(getNextData(file));
 
-		fprintf(vECG, "%d\n", data);
-
 		//finding peak
 		exit = peakDetection(&qrs_params, data);
 
-		if (qrs_params.Rpeak_time != previous_time1) {
-			// Rpeak
-			if (qrs_params.Rpeak < 2000) {
-				printf("Warning");
-			}
-			fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
-			fprintf(Rpeaks_time, "%d\n", qrs_params.Rpeak_time);
+		if (sampleCounter == 250) {
+			sampleCounter = 1;
+			seconds++;
+		} else {
+			sampleCounter++;
 		}
 
-		if (qrs_params.SB_Rpeak_time != previous_time2) {
+		if (exit == 1) {
+			RpeakCounter++;
+
+			// Warning
+			if (qrs_params.Rpeak < 2000 || qrs_params.SB_Rpeak < 2000) {
+				printf("Warning! Low peak at %d!", qrs_params.Rpeak_time);
+			}
+
+			// Rpeak
+			if (qrs_params.Rpeak_time != previous_time1) {
+				fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
+				fprintf(Rpeaks_time, "%d\n", qrs_params.Rpeak_time);
+			}
+
 			// SB Rpeaks
-			fprintf(SB_Rpeaks, "%d\n", qrs_params.SB_Rpeak);
-			fprintf(SB_Rpeaks_time, "%d\n", qrs_params.SB_Rpeak_time);
+			if (qrs_params.SB_Rpeak_time != previous_time2) {
+				fprintf(SB_Rpeaks, "%d\n", qrs_params.SB_Rpeak);
+				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.SB_Rpeak_time);
+			}
+
+			previous_time1 = qrs_params.Rpeak_time;
+			previous_time2 = qrs_params.SB_Rpeak_time;
+
+			printf("%d, %d\n", qrs_params.RR, (qrs_params.RR*60)/250);
+
 		}
 
 		// Thresholds
 		fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
 		fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
 
-		previous_time1 = qrs_params.Rpeak_time;
-		previous_time2 = qrs_params.SB_Rpeak_time;
+		// Data
+		fprintf(vECG, "%d\n", data);
 
-	}
-
-	if (sampleCounter == 250) {
-		sampleCounter = 1;
-		seconds++;
-	} else {
-		sampleCounter++;
-	}
-
-	if (exit == 1) {
-		RpeakCounter++;
 	}
 
 	printf("RPeaks: %d\n", RpeakCounter);
