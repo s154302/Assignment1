@@ -97,10 +97,10 @@ int peakDetection(QRS_params *params, int data) {
 		first_time++;
 	}
 
-	int peak_data = peakDetermination(data);
-	int* peaks = findingPeaks(peak_data);
-	int* peaks_time = findingTime(peak_data);
-	int peak = peaks[peaks[100]];
+	int peak = peakDetermination(data);
+	int* peaks = findingPeaks(peak);
+	int* peaks_time = findingTime(peak);
+
 
 
 	// Makes sure it looks at a different peak each time
