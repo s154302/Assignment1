@@ -22,7 +22,7 @@ int main() {
 	vECG = openWritingfile("vECG.txt");
 
 	int data = 0, previous_time1 = 0, previous_time2 = 0, RpeakCounter = 0,
-			sampleCounter = 0, seconds = 0, pulse = 0, exit;
+			sampleCounter = 0, seconds = 0, pulse = 0, exit = 0;
 
 	qrs_params.NPKF = 4000;
 	qrs_params.SPKF = 1500;
@@ -41,48 +41,45 @@ int main() {
 
 		fprintf(vECG, "%d\n", data);
 
-			if(qrs_params.Rpeak_time != previous_time1){
-				// Rpeak
-				if(qrs_params.Rpeak < 2000){
-					printf("Warning");
-				}
-				fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
-				fprintf(Rpeaks_time, "%d\n", qrs_params.Rpeak_time);
-			}
-
 		//finding peak
 		exit = peakDetection(&qrs_params, data);
 
-			if(qrs_params.SB_Rpeak_time != previous_time2){
-				// SB Rpeaks
-				fprintf(SB_Rpeaks, "%d\n", qrs_params.SB_Rpeak);
-				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.SB_Rpeak_time);
+		if (qrs_params.Rpeak_time != previous_time1) {
+			// Rpeak
+			if (qrs_params.Rpeak < 2000) {
+				printf("Warning");
 			}
-
-			// Thresholds
-			fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
-			fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
-
-			previous_time1 = qrs_params.Rpeak_time;
-			previous_time2 = qrs_params.SB_Rpeak_time;
-
+			fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
+			fprintf(Rpeaks_time, "%d\n", qrs_params.Rpeak_time);
 		}
 
-
-		if (sampleCounter == 250) {
-			sampleCounter = 1;
-			seconds++;
-		} else {
-			sampleCounter++;
+		if (qrs_params.SB_Rpeak_time != previous_time2) {
+			// SB Rpeaks
+			fprintf(SB_Rpeaks, "%d\n", qrs_params.SB_Rpeak);
+			fprintf(SB_Rpeaks_time, "%d\n", qrs_params.SB_Rpeak_time);
 		}
 
-		if(exit == 1) {
-			RpeakCounter++;
-		}
+		// Thresholds
+		fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
+		fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
 
-		printf("RPeaks: %d\n", RpeakCounter);
+		previous_time1 = qrs_params.Rpeak_time;
+		previous_time2 = qrs_params.SB_Rpeak_time;
 
+	}
 
+	if (sampleCounter == 250) {
+		sampleCounter = 1;
+		seconds++;
+	} else {
+		sampleCounter++;
+	}
+
+	if (exit == 1) {
+		RpeakCounter++;
+	}
+
+	printf("RPeaks: %d\n", RpeakCounter);
 
 	fclose(file);
 	fclose(Rpeaks);
@@ -94,7 +91,6 @@ int main() {
 	fclose(vECG);
 
 	return 0;
-
 
 }
 
