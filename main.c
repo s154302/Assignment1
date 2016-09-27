@@ -12,7 +12,7 @@
 int main(int argc, char *argv[]) {
 	//Time anaylysis of program
 	clock_t start, end;
-	double cpu_time_used;
+	int cpu_time_used;
 	start = clock();
 
 
@@ -105,8 +105,8 @@ int main(int argc, char *argv[]) {
 	fclose(vECG);
 
 	end = clock();
-	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-	printf("CPU time used: %d", cpu_time_used);
+	cpu_time_used = ((double) (end - start)) / (CLOCKS_PER_SEC);
+	printf("CPU time used: %d, %d", end-start, CLOCKS_PER_SEC);
 	return 0;
 
 }

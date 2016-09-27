@@ -142,7 +142,7 @@ int peakDetection(QRS_params *params, int data) {
 				recalculateThresholds(params);
 
 				// Else if RR is above RR_miss:
-			} else if (RR > RR_miss) {
+			} else if (RR < 1000 && RR > RR_miss) {
 
 				// Counter for peak searchback
 				int i = peaks[100] - 1;
