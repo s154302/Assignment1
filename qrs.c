@@ -61,7 +61,9 @@ int calculateAverage(int* array) {
 			break;
 		}
 		average += array[i];
+
 	}
+
 	i *= 100;
 	average *= 100;
 	return (average / i);
@@ -142,7 +144,7 @@ int peakDetection(QRS_params *params, int data) {
 				recalculateThresholds(params);
 
 				// Else if RR is above RR_miss:
-			} else if (RR < 1000 && RR > RR_miss) {
+			} else if (RR > RR_miss) {
 
 				// Counter for peak searchback
 				int i = peaks[100] - 1;
@@ -151,8 +153,14 @@ int peakDetection(QRS_params *params, int data) {
 
 					if (peaks[i] > params->THRESHOLD2) {
 
-						arrayInsert(RR_array, 8, peaks_time[i] - params->Rpeak_time);
-						RR_counter = peaks_time[peaks_time[100]] - peaks_time[i];
+						if(peaks_time[i] - params->Rpeak_time > 1000){
+							arrayInsert(RR_array, 8, RR_average1);
+							//RR_counter = RR_average1;
+						} else {
+							arrayInsert(RR_array, 8, peaks_time[i] - params->Rpeak_time);
+
+						}
+RR_counter = peaks_time[peaks_time[100]] - peaks_time[i];
 
 						params->SB_Rpeak = peaks[i];
 						params->SB_Rpeak_time = peaks_time[i];
