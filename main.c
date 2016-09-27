@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 
 		}
 
-		//			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n", qrs_params.Rpeak, qrs_params.seconds, pulse);
+		// printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n", qrs_params.Rpeak, qrs_params.seconds, pulse);
 		// Thresholds
 		fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
 		fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
