@@ -3,12 +3,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "qrs.h"
+#include <time.h>
 
 // Main function for organizing the program execution.
 // The functions and object predefined are just for inspiration.
 // Please change orden,names arguments to fit your solution.
 
-int main() {
+int main(int argc, char *argv[]) {
+	//Time anaylysis of program
+	clock_t start, end;
+	double cpu_time_used;
+	start = clock();
+
+
 	QRS_params qrs_params; // Instance of the made avaiable through: #include "qsr.h"
 	FILE *file, *Rpeaks, *Rpeaks_time, *SB_Rpeaks, *SB_Rpeaks_time, *threshold1,
 			*threshold2, *vECG;               // Pointer to a file object
@@ -54,7 +61,7 @@ int main() {
 
 			// Warning
 			if (qrs_params.Rpeak < 2000 || qrs_params.SB_Rpeak < 2000) {
-				printf("Warning! Low peak at %d!", qrs_params.seconds);
+				printf("Warning! Low peak at %d!\n", qrs_params.seconds);
 			}
 
 			// Rpeak
@@ -97,6 +104,9 @@ int main() {
 	fclose(threshold2);
 	fclose(vECG);
 
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	printf("CPU time used: %d", cpu_time_used);
 	return 0;
 
 }
