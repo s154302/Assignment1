@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
 	int data = 0, previous_time1 = 0, previous_time2 = 0,
 			sampleCounter = 0, pulse = 0, exit = 0;
 
-	qrs_params.NPKF = 4000;
-	qrs_params.SPKF = 1500;
+	qrs_params.NPKF = 2500;
+	qrs_params.SPKF = 1000;
 	qrs_params.THRESHOLD1 = qrs_params.NPKF
 			+ 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
 	qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
 	qrs_params.Rpeak_time = 0;
 	qrs_params.SB_Rpeak_time = 0;
 	qrs_params.seconds = 0;
+	qrs_params.RpeakTime = 0;
 
 	while (!feof(file)) {
 		//filtering and finding data
@@ -82,7 +83,7 @@ int main(int argc, char *argv[]) {
 			// Pulse
 			pulse = 6000/((qrs_params.RR*100)/250);
 
-			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n", qrs_params.Rpeak, qrs_params.seconds, pulse);
+//			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n", qrs_params.Rpeak, qrs_params.seconds, pulse);
 
 		}
 
@@ -106,7 +107,7 @@ int main(int argc, char *argv[]) {
 
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / (CLOCKS_PER_SEC);
-	printf("CPU time used: %d, %d", end-start, CLOCKS_PER_SEC);
+//	printf("CPU time used: %d, %d", end-start, CLOCKS_PER_SEC);
 	return 0;
 
 }

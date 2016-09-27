@@ -16,6 +16,7 @@ typedef struct QRS_params { // Structure for QRS parameters
 	int RR;
 	int Rpeak_time;
 	int seconds;
+	int RpeakTime;
 	// Add parameters that are missing
 	// or of use to you
 
