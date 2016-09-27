@@ -76,11 +76,10 @@ void recalculateThresholds(QRS_params *params) {
 }
 
 int peakDetection(QRS_params *params, int data) {
-	static int RR_counter = 0, previous_peak = 0, RR_array[9] = { 0 },
+	static int RR_counter = -3, previous_peak = 0, RR_array[9] = { 0 },
 			RR_OK_array[9] = { 0 }, RR_average1 = 80, RR_average2 = 80, RR_low =
-					140, RR_high = 200, RR_miss = 300, RR = 0, first_time = 0,
-			exit = 0, SBwarning = 0;
-	exit = 0;
+					140, RR_high = 200, RR_miss = 300, RR = 0, first_time = 0, SBwarning = 0;
+	int exit = 0;
 
 	if (first_time == 0) {
 		RR_array[8] = 7;
@@ -177,6 +176,7 @@ int peakDetection(QRS_params *params, int data) {
 				SBwarning++;
 				if (SBwarning > 4) {
 					printf("Warning at %d\n", params->seconds);
+
 				}
 			}
 		} else {
