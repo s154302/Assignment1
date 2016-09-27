@@ -162,6 +162,7 @@ int peakDetection(QRS_params *params, int data) {
 						RR_high = 1.16 * RR_average1;
 						RR_miss = 1.66 * RR_average1;
 						recalculateThresholds(params);
+						params->RR = RR_array[RR_array[8]];
 
 						return 1;
 					}
