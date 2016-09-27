@@ -72,7 +72,6 @@ int main(int argc, char *argv[]) {
 		if (exit == 2) {
 			// SB Rpeaks
 				fprintf(SB_Rpeaks, "%d\n", qrs_params.Rpeak);
-				printf("%d\n", qrs_params.Rpeak);
 				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.RpeakTime);
 				// Warning
 				if (qrs_params.Rpeak < 2000) {
