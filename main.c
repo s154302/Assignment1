@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 	QRS_params qrs_params; // Instance of the made avaiable through: #include "qsr.h"
 	FILE *file, *Rpeaks, *Rpeaks_time, *SB_Rpeaks, *SB_Rpeaks_time, *threshold1,
 			*threshold2, *vECG;               // Pointer to a file object
-	file = openfile("ECG900K.txt");
+	file = openfile("ECG.txt");
 	Rpeaks = openWritingfile("Rpeaks.txt");
 	Rpeaks_time = openWritingfile("Rpeaks_time.txt");
 	SB_Rpeaks = openWritingfile("SB_Rpeaks.txt");
@@ -60,26 +60,25 @@ int main(int argc, char *argv[]) {
 		if (exit == 1) {
 
 			// Rpeak
-			if (qrs_params.Rpeak_time != qrs_params.RpeakTime) {
 				fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
 				fprintf(Rpeaks_time, "%d\n", qrs_params.RpeakTime);
 				// Warning
 				if (qrs_params.Rpeak < 2000) {
 					printf("Warning! Low peak at %d!\n", qrs_params.seconds);
 				}
-			}
+
 		}
 
 		if (exit == 2) {
 			// SB Rpeaks
-			if (qrs_params.SB_Rpeak_time != qrs_params.RpeakTime) {
 				fprintf(SB_Rpeaks, "%d\n", qrs_params.Rpeak);
+				printf("%d\n", qrs_params.Rpeak);
 				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.RpeakTime);
 				// Warning
 				if (qrs_params.Rpeak < 2000) {
 					printf("Warning! Low peak at %d!\n", qrs_params.seconds);
 				}
-			}
+
 
 		}
 
