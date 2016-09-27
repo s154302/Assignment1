@@ -23,7 +23,6 @@ FILE* openWritingfile(const char* filename) {
 		if(file == NULL){
 			printf("Error opening file!\nCreating new file: %s", filename);
 			file = fopen(filename, "wb");
-			exit(1);
 		}
 
 	return file;
