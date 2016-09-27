@@ -51,17 +51,19 @@ int* findingTime(int peak) {
 	return peaks_time;
 }
 
-double calculateAverage(int* array) {
+int calculateAverage(int* array) {
 	// Calculates the average of the array
 	// Used for the RR arrays
 	int i;
-	double average = 0;
+	int average = 0;
 	for (i = 0; i < 8; i++) {
 		if (array[i] == 0) {
 			break;
 		}
 		average += array[i];
 	}
+	i *= 100;
+	average *= 100;
 	return (average / i);
 }
 
