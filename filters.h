@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Feel free to change return statement and arguments
+// Methods for filters.c
 int lowPassFilter(int data);
 int highPassFilter(int data);
 int derivativeFilter(int data);

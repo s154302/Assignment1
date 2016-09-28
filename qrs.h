@@ -14,12 +14,11 @@ typedef struct QRS_params { // Structure for QRS parameters
 	int RR;
 	int seconds;
 	int RpeakTime;
-	// Add parameters that are missing
-	// or of use to you
+
 
 } QRS_params;
 
-// Feel free to change and add methods
+// Methods for qrs.c
 int peakDetermination(int data);
 void arrayInsert(int* array, int size, int value);
 int* findingPeaks(int data);
