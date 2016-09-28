@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Feel free to change return statement and arguments
+// The low pass filter
 int lowPassFilter(int data) {
 	static int previous_1 =0, previous_2=0, current=0, data_array[12]={0};
 
@@ -19,6 +19,7 @@ int lowPassFilter(int data) {
 	return current;
 }
 
+// The high pass filter
 int highPassFilter(int data) {
 	static int current=0, previous_1=0, data_array[32]={0};
 
@@ -32,6 +33,7 @@ int highPassFilter(int data) {
 	return current;
 }
 
+// The derivative filter
 int derivativeFilter(int data) {
 	static int current=0, data_array[4]={0};
 
@@ -45,10 +47,12 @@ int derivativeFilter(int data) {
 	return current;
 }
 
+// The squaring filter
 int squaringFilter(int data) {
 	return data * data;
 }
 
+// The moving window integration filter
 int movingWindowIntegrationFilter(int data) {
 	static int current=0, data_array[30]={0};
 	int sum = 0;
@@ -66,6 +70,7 @@ int movingWindowIntegrationFilter(int data) {
 	return current;
 }
 
+// Filtering the data
 int filterData(int data) {
 
 	return movingWindowIntegrationFilter(
