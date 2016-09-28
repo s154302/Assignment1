@@ -95,18 +95,12 @@ int peakDetection(QRS_params *params, int data) {
 		first_time++;
 	}
 
-<<<<<<< HEAD
+
+	// Creating/updating the peak arrays
 	int peak = peakDetermination(data);
 	int* peaks = findingPeaks(peak);
 	int* peaks_time = findingTime(peak);
-
-=======
-	// Creating/updating the peak arrays
-	int peak_data = peakDetermination(data);
-	int* peaks = findingPeaks(peak_data);
-	int* peaks_time = findingTime(peak_data);
-	int peak = peaks[peaks[100]];
->>>>>>> origin/master
+	peak = peaks[peaks[100]];
 
 	// Makes sure it looks at a different peak each time
 	if (previous_peak != peaks[100]) {
@@ -119,7 +113,7 @@ int peakDetection(QRS_params *params, int data) {
 			// If the RR value is between the high and low RR values then
 			if (RR_low < params->RR && params->RR < RR_high) {
 
-				// Reset Warning count
+				// Reset warning count
 				// Setting exit int
 				SBwarning = 0;
 				exit = 1;
