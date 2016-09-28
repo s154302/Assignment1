@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 	threshold2 = openWritingfile("Threshold2.txt");
 	vECG = openWritingfile("vECG.txt");
 
-	int data = 0, sampleCounter = 0, pulse = 0, exit = 0;
+	int data = 0, sampleCounter = 0, pulse = 0, exit = 0, counter = 0;
 
 	qrs_params.NPKF = 2000;
 	qrs_params.SPKF = 1000;
@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
 			+ 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
 	qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
 	qrs_params.RR = 0;
+	qrs_params.RR_miss = 0;
 	qrs_params.Rpeak = 2000;
 	qrs_params.RpeakTime = 0;
 	qrs_params.seconds = 0;
@@ -49,10 +50,6 @@ int main(int argc, char *argv[]) {
 		if (sampleCounter == 250) {
 			sampleCounter = 1;
 			qrs_params.seconds++;
-
-			// Pulse
-			pulse = 6000 / ((qrs_params.RR * 100) / 250);
-
 		} else {
 			sampleCounter++;
 		}
@@ -60,28 +57,46 @@ int main(int argc, char *argv[]) {
 		if (exit == 1) {
 
 			// Rpeak
-				fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
-				fprintf(Rpeaks_time, "%d\n", qrs_params.RpeakTime);
-				// Warning
-				if (qrs_params.Rpeak < 2000) {
-					printf("Warning! Low peak at %d!\n", qrs_params.seconds);
-				}
-
+			fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
+			fprintf(Rpeaks_time, "%d\n", qrs_params.RpeakTime);
+			// Warning
+			if (qrs_params.Rpeak < 2000) {
+				printf("Warning! Low peak at %d!\n\n", qrs_params.seconds);
+			}
+			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n",
+					qrs_params.Rpeak, qrs_params.seconds, pulse);
+			// Pulse
+			pulse = 6000 / ((qrs_params.RR * 100) / 250);
+			counter = 0;
 		}
 
 		if (exit == 2) {
 			// SB Rpeaks
-				fprintf(SB_Rpeaks, "%d\n", qrs_params.Rpeak);
-				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.RpeakTime);
-				// Warning
-				if (qrs_params.Rpeak < 2000) {
-					printf("Warning! Low peak at %d!\n", qrs_params.seconds);
-				}
+			fprintf(SB_Rpeaks, "%d\n", qrs_params.Rpeak);
+			fprintf(SB_Rpeaks_time, "%d\n", qrs_params.RpeakTime);
+			// Warning
+			if (qrs_params.Rpeak < 2000) {
+				printf("Warning! Low peak at %d!\n\n", qrs_params.seconds);
+			}
+			// Pulse
+			pulse = 6000 / ((qrs_params.RR * 100) / 250);
+			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n",
+					qrs_params.Rpeak, qrs_params.seconds, pulse);
+			counter = 0;
+		}
 
+		if(qrs_params.RR > qrs_params.RR_miss) {
 
 		}
 
-		// printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n", qrs_params.Rpeak, qrs_params.seconds, pulse);
+		if(exit == 0 && counter > -1) {
+			counter ++;
+			if(counter > 1000) {
+				printf("No peaks detected after %d s.\n", qrs_params.seconds);
+				counter = -1;
+			}
+		}
+
 		// Thresholds
 		fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
 		fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
@@ -102,7 +117,7 @@ int main(int argc, char *argv[]) {
 
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / (CLOCKS_PER_SEC);
-//	printf("CPU time used: %d, %d", end-start, CLOCKS_PER_SEC);
+	printf("CPU time used: %d, %d", end-start, CLOCKS_PER_SEC);
 	return 0;
 
 }

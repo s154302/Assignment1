@@ -11,12 +11,10 @@ typedef struct QRS_params { // Structure for QRS parameters
 	int THRESHOLD1;
 	int THRESHOLD2;
 	int Rpeak;
-	int SB_Rpeak;
-	int SB_Rpeak_time;
 	int RR;
-	int Rpeak_time;
 	int seconds;
 	int RpeakTime;
+	int RR_miss;
 	// Add parameters that are missing
 	// or of use to you
 

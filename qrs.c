@@ -156,14 +156,16 @@ int peakDetection(QRS_params *params, int data) {
 
 						params->Rpeak = peaks[i];
 						params->RpeakTime = peaks_time[i];
+						params->RR = peaks_time[peaks_time[100]] - params->RpeakTime;
+
 
 						params->SPKF = 0.125 * peak + 0.875 * params->SPKF;
 						RR_average1 = calculateAverage(RR_array);
-						printf("Before: %d\n", RR_miss);
+
 						RR_low = 0.92 * RR_average1;
 						RR_high = 1.16 * RR_average1;
 						RR_miss = 1.66 * RR_average1;
-						printf("After: %d\n", RR_miss);
+
 						//printf("Average: %d, low: %d, high: %d, miss: %d\n", RR_average1, RR_low, RR_high, RR_miss);
 
 						recalculateThresholds(params);
@@ -192,6 +194,7 @@ int peakDetection(QRS_params *params, int data) {
 		}
 
 	}
+	params->RR_miss = RR_miss;
 	previous_peak = peaks[100];
 	return exit;
 }
