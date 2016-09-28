@@ -79,16 +79,9 @@ void recalculateThresholds(QRS_params *params) {
 }
 
 int peakDetection(QRS_params *params, int data) {
-	static int previous_peak = 0,
-			RR_array[9] = { 0 },
-			RR_OK_array[9] = { 0 },
-			RR_average1 = 80,
-			RR_average2 = 80,
-			RR_low = 10,
-			RR_high = 200,
-			RR_miss = 300,
-			first_time = 0,
-			SBwarning = 0;
+	static int previous_peak = 0, RR_array[9] = { 0 }, RR_OK_array[9] = { 0 },
+			RR_average1 = 80, RR_average2 = 80, RR_low = 10, RR_high = 200,
+			RR_miss = 300, first_time = 0, SBwarning = 0;
 	int exit = 0;
 
 	if (first_time == 0) {
@@ -101,7 +94,6 @@ int peakDetection(QRS_params *params, int data) {
 	int* peaks = findingPeaks(peak_data);
 	int* peaks_time = findingTime(peak_data);
 	int peak = peaks[peaks[100]];
-
 
 	// Makes sure it looks at a different peak each time
 	if (previous_peak != peaks[100]) {
@@ -144,20 +136,29 @@ int peakDetection(QRS_params *params, int data) {
 				// Else if RR is above RR_miss:
 			} else if (params->RR > RR_miss) {
 
+				if (RR_low > params->RR || params->RR > RR_high) {
+					SBwarning++;
+					if (SBwarning > 4) {
+						printf("Warning1 at %d\n\n", params->seconds);
+						SBwarning = 0;
+					}
+				}
+				SBwarning++;
+
 				// Counter for peak searchback
 				int i = peaks[100] - 1;
 				while (i != peaks[100]) {
-
 					// If the found peak is above threshold2 then values are recalculated and searchback is stopped.
 					if (peaks[i] > params->THRESHOLD2) {
 
-						arrayInsert(RR_array, 8, peaks_time[i] - params->RpeakTime);
+						arrayInsert(RR_array, 8,
+								peaks_time[i] - params->RpeakTime);
 						// printf("Searchback: %d\n", RR);
 
 						params->Rpeak = peaks[i];
 						params->RpeakTime = peaks_time[i];
-						params->RR = peaks_time[peaks_time[100]] - params->RpeakTime;
-
+						params->RR = peaks_time[peaks_time[100]]
+								- params->RpeakTime;
 
 						params->SPKF = 0.125 * peak + 0.875 * params->SPKF;
 						RR_average1 = calculateAverage(RR_array);
@@ -179,14 +180,14 @@ int peakDetection(QRS_params *params, int data) {
 					}
 
 				}
-			}
-			if (RR_low > params->RR || params->RR > RR_high) {
+			} else {
 				SBwarning++;
 				if (SBwarning > 4) {
 					printf("Warning at %d\n", params->seconds);
-
+					SBwarning = 0;
 				}
 			}
+
 		} else {
 			params->NPKF = 0.125 * peak + 0.875 * params->NPKF;
 			recalculateThresholds(params);

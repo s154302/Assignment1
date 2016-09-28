@@ -67,6 +67,7 @@ int movingWindowIntegrationFilter(int data) {
 }
 
 int filterData(int data) {
+
 	return movingWindowIntegrationFilter(
 			squaringFilter(
 					derivativeFilter(
