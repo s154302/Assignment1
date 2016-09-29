@@ -12,9 +12,9 @@ void arrayInsert(int* array, int size, int value) {
 	array[array[size]] = value;
 }
 
-int peakDetermination(int data) {
+int peakDetermination(int data, QRS_params *params) {
 	// Determinating if there is a peak
-	static int peak_determination[5] = { 0 };
+	int* peak_determination = params->peak_determination;
 
 	for (int i = 4; i > 0; i--) {
 		peak_determination[i] = peak_determination[i - 1];
@@ -33,27 +33,22 @@ int peakDetermination(int data) {
 	return 0;
 }
 
-int* findingPeaks(int peak) {
+void findingPeaks(int peak, QRS_params *params) {
 	// Saving peaks in an array
-	static int peaks[101] = { 0 };
-
+	int* array = params->peaks;
 	if (peak != 0) {
-		arrayInsert(peaks, 100, peak);
+		arrayInsert(array, 100, peak);
 	}
-
-	return peaks;
 }
 
-int* findingTime(int peak) {
+void findingTime(int peak, QRS_params *params) {
 	// Saving the peaks time in an array
-	static int peaks_time[101] = { 0 }, time = 0;
-	time++;
+	params->dataTime++;
 
 	if (peak != 0) {
-		arrayInsert(peaks_time, 100, time);
+		arrayInsert(params->peaks_time, 100, params->dataTime);
 
 	}
-	return peaks_time;
 }
 
 int calculateAverage(int* array) {
@@ -62,6 +57,7 @@ int calculateAverage(int* array) {
 	int i;
 	int average = 0;
 	for (i = 0; i < 8; i++) {
+
 		if (array[i] == 0) {
 			break;
 		}
@@ -82,28 +78,22 @@ void recalculateThresholds(QRS_params *params) {
 }
 
 int peakDetection(QRS_params *params, int data) {
-	// Analysing the peaks
-	static int previous_peak = 0, RR_array[9] = { 0 }, RR_OK_array[9] = { 0 },
-			RR_average1 = 80, RR_average2 = 80, RR_low = 10, RR_high = 200,
-			RR_miss = 300, first_time = 0, SBwarning = 0;
-	int exit = 0;
-
-	// Initiating the RR arrays
-	if (first_time == 0) {
-		RR_array[8] = 7;
-		RR_OK_array[8] = 7;
-		first_time++;
-	}
-
 
 	// Creating/updating the peak arrays
-	int peak = peakDetermination(data);
-	int* peaks = findingPeaks(peak);
-	int* peaks_time = findingTime(peak);
+	int peak = peakDetermination(data, params);
+
+	findingPeaks(peak, params);
+	int* peaks = params->peaks;
+
+	findingTime(peak, params);
+	int* peaks_time = params->peaks_time;
+
 	peak = peaks[peaks[100]];
 
+	int exit = 0;
+
 	// Makes sure it looks at a different peak each time
-	if (previous_peak != peaks[100]) {
+	if (params->previousPeak != peaks[100]) {
 
 		// If peak is above threshold1 calculate the RR
 		if (peak > params->THRESHOLD1) {
@@ -111,11 +101,11 @@ int peakDetection(QRS_params *params, int data) {
 			params->RR = peaks_time[peaks_time[100]] - params->RpeakTime;
 
 			// If the RR value is between the high and low RR values then
-			if (RR_low < params->RR && params->RR < RR_high) {
+			if (params->RR_low < params->RR && params->RR < params->RR_high) {
 
 				// Reset warning count
 				// Setting exit int
-				SBwarning = 0;
+				params->SB_warning = 0;
 				exit = 1;
 
 				// Store the peak as an RPeak
@@ -126,22 +116,23 @@ int peakDetection(QRS_params *params, int data) {
 				params->SPKF = 0.125 * peak + 0.875 * params->SPKF;
 
 				// Store the RR value in the recent RR array and the OK RR array
-				arrayInsert(RR_array, 8, params->RR);
-				arrayInsert(RR_OK_array, 8, params->RR);
+				arrayInsert(params->RR_array, 8, params->RR);
+				arrayInsert(params->RR_OK_array, 8, params->RR);
 
 				// Recalculate the averages and the high, low, and miss values
-				RR_average1 = calculateAverage(RR_array);
-				RR_average2 = calculateAverage(RR_OK_array);
+				params->RR_average1 = calculateAverage(params->RR_array);
+				params->RR_average2 = calculateAverage(params->RR_OK_array);
 
-				RR_low = 0.92 * RR_average2;
-				RR_high = 1.16 * RR_average2;
-				RR_miss = 1.66 * RR_average2;
+				params->RR_low = 0.92 * params->RR_average2;
+				params->RR_high = 1.16 * params->RR_average2;
+				params->RR_miss = 1.66 * params->RR_average2;
+
 
 				// Recalculate the thresholds
 				recalculateThresholds(params);
 
 			// Else if RR is above RR_miss:
-			} else if (params->RR > RR_miss) {
+			} else if (params->RR > params->RR_miss) {
 
 				// Counter for peak searchback
 				int i = peaks[100] - 1;
@@ -153,20 +144,21 @@ int peakDetection(QRS_params *params, int data) {
 					if (peaks[i] > params->THRESHOLD2) {
 
 						// Recalculating RR and saving it
-						arrayInsert(RR_array, 8, peaks_time[i] - params->RpeakTime);
+						arrayInsert(params->RR_array, 8, peaks_time[i] - params->RpeakTime);
 
 						// Saving new peak values
 						params->Rpeak = peaks[i];
 						params->RpeakTime = peaks_time[i];
+
 						params->RR = peaks_time[peaks_time[100]] - params->RpeakTime;
 
 						// Recalculate the averages and the high, low, and miss values
 						params->SPKF = 0.125 * peak + 0.875 * params->SPKF;
-						RR_average1 = calculateAverage(RR_array);
+						params->RR_average1 = calculateAverage(params->RR_array);
 
-						RR_low = 0.92 * RR_average1;
-						RR_high = 1.16 * RR_average1;
-						RR_miss = 1.66 * RR_average1;
+						params->RR_low = 0.92 * params->RR_average1;
+						params->RR_high = 1.16 * params->RR_average1;
+						params->RR_miss = 1.66 * params->RR_average1;
 
 						// Recalculate the thresholds
 						recalculateThresholds(params);
@@ -185,19 +177,19 @@ int peakDetection(QRS_params *params, int data) {
 				}
 
 				// Searching for warnings
-				SBwarning++;
-				if (SBwarning > 4) {
+				params->SB_warning++;
+				if (params->SB_warning > 4) {
 					printf("Warning at %d!\n\n", params->seconds);
-					SBwarning = 0;
+					params->SB_warning = 0;
 				}
 
 			} else {
 
 				// searching for warnings
-				SBwarning++;
-				if (SBwarning > 4) {
+				params->SB_warning++;
+				if (params->SB_warning > 4) {
 					printf("Warning at %d!\n\n", params->seconds);
-					SBwarning = 0;
+					params->SB_warning = 0;
 				}
 			}
 
@@ -211,7 +203,7 @@ int peakDetection(QRS_params *params, int data) {
 	}
 
 	// Saving peak number
-	previous_peak = peaks[100];
+	params->previousPeak = peaks[100];
 
 	return exit;
 }

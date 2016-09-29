@@ -10,111 +10,134 @@
 // Please change orden,names arguments to fit your solution.
 
 int main() {
-	QRS_params qrs_params; // Instance of the made avaiable through: #include "qsr.h"
-	FILE *file, *Rpeaks, *Rpeaks_time, *SB_Rpeaks, *SB_Rpeaks_time, *threshold1,
-			*threshold2, *vECG;
-	file = openfile("ECG.txt");
+		QRS_params qrs_params; // Instance of the made avaiable through: #include "qsr.h"
+		FILE *file, *Rpeaks, *Rpeaks_time, *SB_Rpeaks, *SB_Rpeaks_time,
+			*threshold1, *threshold2, *vECG;
+		file = openfile("ECG.txt");
 
-	// Creating/opening files
-	Rpeaks = openWritingfile("Rpeaks.txt");
-	Rpeaks_time = openWritingfile("Rpeaks_time.txt");
-	SB_Rpeaks = openWritingfile("SB_Rpeaks.txt");
-	SB_Rpeaks_time = openWritingfile("SB_Rpeaks_time.txt");
-	threshold1 = openWritingfile("Threshold1.txt");
-	threshold2 = openWritingfile("Threshold2.txt");
-	vECG = openWritingfile("vECG.txt");
+		// Creating/opening files
+		Rpeaks = openWritingfile("Rpeaks.txt");
+		Rpeaks_time = openWritingfile("Rpeaks_time.txt");
+		SB_Rpeaks = openWritingfile("SB_Rpeaks.txt");
+		SB_Rpeaks_time = openWritingfile("SB_Rpeaks_time.txt");
+		threshold1 = openWritingfile("Threshold1.txt");
+		threshold2 = openWritingfile("Threshold2.txt");
+		vECG = openWritingfile("vECG.txt");
 
-	int data = 0, sampleCounter = 0, pulse = 0, exit = 0, counter = 0;
+		int data = 0, sampleCounter = 0, pulse = 0, exit = 0, counter = 0,
+				RR_array[9] = { 0 }, RR_OK_array[9] = { 0 }, peaks[101] = { 0 },
+				peaks_time[101] = { 0 }, peak_determination[5] = { 0 };
 
-	// Setting the parameters
-	qrs_params.NPKF = 2000;
-	qrs_params.SPKF = 1000;
-	qrs_params.THRESHOLD1 = qrs_params.NPKF
-			+ 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
-	qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
-	qrs_params.RR = 0;
-	qrs_params.Rpeak = 2000;
-	qrs_params.RpeakTime = 0;
-	qrs_params.seconds = 0;
+		RR_array[8] = 7;
+		RR_OK_array[8] = 7;
+		// Setting the parameters
+		// Each parameter is explained in header
+		qrs_params.NPKF = 2000;
+		qrs_params.SPKF = 1000;
+		qrs_params.THRESHOLD1 = qrs_params.NPKF
+				+ 0.25 * (qrs_params.SPKF - qrs_params.NPKF);
+		qrs_params.THRESHOLD2 = 0.5 * qrs_params.THRESHOLD1;
+		qrs_params.RR = 0;
+		qrs_params.Rpeak = 2000;
+		qrs_params.RpeakTime = 0;
+		qrs_params.dataTime = 0;
+		qrs_params.seconds = 0;
+		qrs_params.previousPeak = 0;
+		qrs_params.RR_array = RR_array;
+		qrs_params.RR_OK_array = RR_OK_array;
+		qrs_params.peaks = peaks;
+		qrs_params.peaks_time = peaks_time;
+		qrs_params.peak_determination = peak_determination;
+		qrs_params.RR_average1 = 80;
+		qrs_params.RR_average2 = 80;
+		qrs_params.RR_low = 100;
+		qrs_params.RR_high = 200;
+		qrs_params.RR_miss = 300;
+		qrs_params.SB_warning = 0;
 
-	while (!feof(file)) {
-		//filtering and finding data
-		data = filterData(getNextData(file));
+		while (!feof(file)) {
+			//filtering and finding data
+			data = filterData(getNextData(file));
 
-		//finding peak
-		exit = peakDetection(&qrs_params, data);
+			//finding peak
+			exit = peakDetection(&qrs_params, data);
 
-		// Counting seconds
-		if (sampleCounter == 250) {
-			sampleCounter = 1;
-			qrs_params.seconds++;
-		} else {
-			sampleCounter++;
-		}
-
-		if (exit == 1) {
-
-			// Rpeak
-			fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
-			fprintf(Rpeaks_time, "%d\n", qrs_params.RpeakTime);
-
-			// Warning
-			if (qrs_params.Rpeak < 2000) {
-				printf("Warning! Low peak at %d!\n\n", qrs_params.seconds);
-			}
-			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n",
-					qrs_params.Rpeak, qrs_params.seconds, pulse);
-
-			// Pulse
-			pulse = 6000 / ((qrs_params.RR * 100) / 250);
-			counter = 0;
-		}
-
-		if (exit == 2) {
-
-			// SB Rpeaks
-			fprintf(SB_Rpeaks, "%d\n", qrs_params.Rpeak);
-			fprintf(SB_Rpeaks_time, "%d\n", qrs_params.RpeakTime);
-
-			// Warning
-			if (qrs_params.Rpeak < 2000) {
-				printf("Warning! Low peak at %d!\n\n", qrs_params.seconds);
+			// Counting seconds
+			if (sampleCounter == 250) {
+				sampleCounter = 1;
+				qrs_params.seconds++;
+			} else {
+				sampleCounter++;
 			}
 
-			// Pulse
-			pulse = 6000 / ((qrs_params.RR * 100) / 250);
-			printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n",
-					qrs_params.Rpeak, qrs_params.seconds, pulse);
-			counter = 0;
-		}
+			if (exit == 1) {
 
-		if(exit == 0 && counter > -1) {
-			counter ++;
-			if(counter > 1000) {
-				printf("No peaks detected after %d s.\n", qrs_params.seconds);
-				counter = -1;
+				// Rpeak
+				fprintf(Rpeaks, "%d\n", qrs_params.Rpeak);
+				fprintf(Rpeaks_time, "%d\n", qrs_params.RpeakTime);
+
+				// Warning
+				if (qrs_params.Rpeak < 2000) {
+					printf("Warning! Low peak at %d!\n\n", qrs_params.seconds);
+				}
+				printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n",
+						qrs_params.Rpeak, qrs_params.seconds, pulse);
+
+				// Pulse
+				if ((qrs_params.RR * 100) != 0
+						&& ((qrs_params.RR * 100) / 250) != 0) {
+					pulse = 6000 / ((qrs_params.RR * 100) / 250);
+				}
+				counter = 0;
 			}
+
+			if (exit == 2) {
+
+				// SB Rpeaks
+				fprintf(SB_Rpeaks, "%d\n", qrs_params.Rpeak);
+				fprintf(SB_Rpeaks_time, "%d\n", qrs_params.RpeakTime);
+
+				// Warning
+				if (qrs_params.Rpeak < 2000) {
+					printf("Warning! Low peak at %d!\n\n", qrs_params.seconds);
+				}
+
+				// Pulse
+				if ((qrs_params.RR * 100) != 0
+						&& ((qrs_params.RR * 100) / 250) != 0) {
+					pulse = 6000 / ((qrs_params.RR * 100) / 250);
+				}
+				printf("Rpeak: %d\nTime: %d seconds\nPulse: %d\n\n",
+						qrs_params.Rpeak, qrs_params.seconds, pulse);
+				counter = 0;
+			}
+
+			if (exit == 0 && counter > -1) {
+				counter++;
+				if (counter > 1000) {
+					printf("No peaks detected after %d s.\n",
+							qrs_params.seconds);
+					counter = -1;
+				}
+			}
+
+			// Thresholds
+			fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
+			fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
+
+			// Data
+			fprintf(vECG, "%d\n", data);
+
 		}
 
-		// Thresholds
-		fprintf(threshold1, "%d\n", qrs_params.THRESHOLD1);
-		fprintf(threshold2, "%d\n", qrs_params.THRESHOLD2);
-
-		// Data
-		fprintf(vECG, "%d\n", data);
-
-	}
-
-	fclose(file);
-	fclose(Rpeaks);
-	fclose(Rpeaks_time);
-	fclose(SB_Rpeaks);
-	fclose(SB_Rpeaks_time);
-	fclose(threshold1);
-	fclose(threshold2);
-	fclose(vECG);
-
+		fclose(file);
+		fclose(Rpeaks);
+		fclose(Rpeaks_time);
+		fclose(SB_Rpeaks);
+		fclose(SB_Rpeaks_time);
+		fclose(threshold1);
+		fclose(threshold2);
+		fclose(vECG);
 	return 0;
-
 }
 
